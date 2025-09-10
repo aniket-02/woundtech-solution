@@ -1,0 +1,39 @@
+.card-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.card-buttons button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.card-buttons button:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+  color: #64748b;
+}
+
+.card-buttons button:nth-child(1) {
+  background: #2eaf65;
+  color: #fff;
+}
+
+.card-buttons button:nth-child(1):hover:not(:disabled) {
+  background: #249955;
+}
+
+.card-buttons button:nth-child(2) {
+  background: #1e40af;
+  color: #fff;
+}
+
+.card-buttons button:nth-child(2):hover:not(:disabled) {
+  background: #1a36a0;
+}

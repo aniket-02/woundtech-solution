@@ -1,0 +1,354 @@
+/* General dashboard container */
+.dashboard-container {
+  width: 100%;
+  max-width: 1400px; /* Increased width to accommodate 7 day-columns */
+  margin: 2rem auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+}
+
+.dashboard-container h2 {
+  text-align: center;
+  color: #1e40af;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-container p {
+  text-align: center;
+  color: #64748b;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+/* Week grid: all 7 columns inside container */
+.week-grid {
+  display: flex;
+  gap: 16px;
+  justify-content: center;  /* Center columns inside container */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Individual day cards */
+.week-day-column {
+  flex: 0 0 140px;              /* Fixed width for each day */
+  background-color: #f1f8fc;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0px 5px 15px rgba(0,0,0,0.05);
+  transition: transform 0.2s;
+}
+
+.week-day-column:hover {
+  transform: translateY(-3px);
+}
+
+.week-day-column h4 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #1e3a8a; /* darker blue */
+  border-bottom: 1px solid #cbd5e1;
+  width: 100%;
+  padding-bottom: 6px;
+}
+
+/* Slot buttons */
+.slot-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  border: 1px solid #2eaf65;
+  background-color: #e0f2f1;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: center;
+  white-space: nowrap;     /* Prevent text wrapping */
+  font-size: 0.95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+}
+
+.slot-btn.available:hover {
+  background-color: #c8ede4;
+}
+
+.slot-btn.booked {
+  background-color: #fddede;
+  border-color: #f44336;
+  color: #9b1c1c;
+  cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .dashboard-container {
+    max-width: 100%;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 900px) {
+  .week-day-column {
+    min-width: 120px;
+  }
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.signout-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #e53e3e; /* red */
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.signout-btn:hover {
+  background: #c53030;
+}
+
+.appointments-btn {
+  margin-right: 16px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #4169e1; /* royal blue */
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.appointments-btn:hover {
+  background: #27408b; /* darker royal blue */
+}
+
+.slot-btn.in-progress {
+  background-color: #fff3cd; /* light yellow */
+  border-color: #ffc107; /* amber */
+  color: #856404;
+  cursor: not-allowed;
+}
+
+.slot-btn.completed {
+  background-color: #e2e3e5; /* light grey */
+  border-color: #6c757d;
+  color: #495057;
+  cursor: not-allowed;
+}
+
+.appointments-list {
+  margin: 20px 0;
+}
+
+.appointments-list h3 {
+  margin-bottom: 12px;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.appointments-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.appointment-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  border: 1px solid #ddd;
+}
+
+.appointment-time {
+  font-weight: 600;
+  min-width: 200px;
+}
+
+.appointment-details {
+  flex-grow: 1;
+  padding: 0 12px;
+}
+
+.appointment-notes {
+  display: block;
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 4px;
+}
+
+.appointment-status {
+  font-weight: bold;
+  text-transform: capitalize;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+/* Status-specific colors (match slot-btns) */
+.appointment-card.booked {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+.appointment-card.in_progress {
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+}
+.appointment-card.completed {
+  background-color: #e2e3e5;
+  border-color: #d6d8db;
+}
+/* Shared style for appointment action buttons */
+.action-btn {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 8px;
+  margin-right: 8px;
+  display: inline-block;
+}
+
+/* In Progress button (royal blue like appointments-btn) */
+.inprogress-btn {
+  background: #4169e1; /* royal blue */
+  color: white;
+}
+
+.inprogress-btn:hover {
+  background: #27408b;
+}
+
+/* Completed button (green tone) */
+.completed-btn {
+  background: #38a169; /* green */
+  color: white;
+}
+
+.completed-btn:hover {
+  background: #2f855a;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.appointments-modal {
+  background: #fff;
+  padding: 20px;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90%;
+  overflow-y: auto;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  background: #ff7875;
+}
+
+.appointments-horizontal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.appointment-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px 15px;
+  flex: 0 0 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.appointment-time {
+  font-weight: bold;
+}
+
+.appointment-status {
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.appointment-actions button {
+  margin-top: 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.inprogress-btn {
+  background: #fadb14;
+  color: #000;
+}
+
+.completed-btn {
+  background: #8c8c8c;
+  color: #fff;
+}
+
+.inprogress-btn:hover {
+  background: #ffe58f;
+}
+
+.completed-btn:hover {
+  background: #bfbfbf;
+}
+
+
