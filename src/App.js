@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { RoleProvider } from "./context/RoleContext";
+import UserSelect from "./components/user-select-component";
+import PatientLogin from "./components/login-component/patient-login";
+import ClinicianLogin from "./components/login-component/clinician-login";
+import ClinicianDashboard from "./components/dashboard-component/clinician-dashboard";
+import PatientDashboard from "./components/dashboard-component/patient-dashboard";
+import PatientRegister from "./components/register-component/patient-register";
+import ClinicianRegister from "./components/register-component/clinician-register";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <RoleProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<UserSelect />} />
+
+          {/* Login & Register pages should NOT be protected */}
+          <Route path="/patient-login" element={<PatientLogin />} />
+          <Route path="/clinician-login" element={<ClinicianLogin />} />
+          <Route path="/patient-register" element={<PatientRegister />} />
+          <Route path="/clinician-register" element={<ClinicianRegister />} />
+
+          {/* Dashboard pages remain protected */}
+          <Route path="/clinician-dashboard" element={<ClinicianDashboard />} />
+          <Route
+            path="/patient-dashboard" element={<PatientDashboard />}
+          />
+        </Routes>
+      </Router>
+    </RoleProvider>
   );
 }
-
-export default App;
