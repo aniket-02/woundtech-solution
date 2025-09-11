@@ -1,7 +1,6 @@
-/* General dashboard container */
 .dashboard-container {
   width: 100%;
-  max-width: 1400px; /* Increased width to accommodate 7 day-columns */
+  max-width: 1400px;
   margin: 2rem auto;
   padding: 20px;
   background-color: #ffffff;
@@ -24,18 +23,16 @@
   font-size: 0.95rem;
 }
 
-/* Week grid: all 7 columns inside container */
 .week-grid {
   display: flex;
   gap: 16px;
-  justify-content: center;  /* Center columns inside container */
+  justify-content: center;
   width: 100%;
   box-sizing: border-box;
 }
 
-/* Individual day cards */
 .week-day-column {
-  flex: 0 0 140px;              /* Fixed width for each day */
+  flex: 0 0 140px;
   background-color: #f1f8fc;
   border-radius: 12px;
   padding: 12px;
@@ -54,13 +51,12 @@
   text-align: center;
   margin-bottom: 10px;
   font-size: 1rem;
-  color: #1e3a8a; /* darker blue */
+  color: #1e3a8a;
   border-bottom: 1px solid #cbd5e1;
   width: 100%;
   padding-bottom: 6px;
 }
 
-/* Slot buttons */
 .slot-btn {
   display: block;
   width: 100%;
@@ -73,7 +69,7 @@
   cursor: pointer;
   transition: all 0.3s;
   text-align: center;
-  white-space: nowrap;     /* Prevent text wrapping */
+  white-space: nowrap;
   font-size: 0.95rem;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -91,7 +87,20 @@
   cursor: not-allowed;
 }
 
-/* Responsive adjustments */
+.slot-btn.in-progress {
+  background-color: #fff3cd;
+  border-color: #ffc107;
+  color: #856404;
+  cursor: not-allowed;
+}
+
+.slot-btn.completed {
+  background-color: #e2e3e5;
+  border-color: #6c757d;
+  color: #495057;
+  cursor: not-allowed;
+}
+
 @media (max-width: 1200px) {
   .dashboard-container {
     max-width: 100%;
@@ -116,7 +125,7 @@
   padding: 8px 16px;
   border: none;
   border-radius: 8px;
-  background: #e53e3e; /* red */
+  background: #e53e3e;
   color: #fff;
   font-weight: bold;
   cursor: pointer;
@@ -132,7 +141,7 @@
   padding: 8px 16px;
   border: none;
   border-radius: 8px;
-  background: #4169e1; /* royal blue */
+  background: #4169e1;
   color: #fff;
   font-weight: bold;
   cursor: pointer;
@@ -140,21 +149,7 @@
 }
 
 .appointments-btn:hover {
-  background: #27408b; /* darker royal blue */
-}
-
-.slot-btn.in-progress {
-  background-color: #fff3cd; /* light yellow */
-  border-color: #ffc107; /* amber */
-  color: #856404;
-  cursor: not-allowed;
-}
-
-.slot-btn.completed {
-  background-color: #e2e3e5; /* light grey */
-  border-color: #6c757d;
-  color: #495057;
-  cursor: not-allowed;
+  background: #27408b;
 }
 
 .appointments-list {
@@ -173,55 +168,21 @@
   gap: 12px;
 }
 
-.appointment-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  border: 1px solid #ddd;
-}
-
-.appointment-time {
-  font-weight: 600;
-  min-width: 200px;
-}
-
-.appointment-details {
-  flex-grow: 1;
-  padding: 0 12px;
-}
-
-.appointment-notes {
-  display: block;
-  font-size: 0.85rem;
-  color: #666;
-  margin-top: 4px;
-}
-
-.appointment-status {
-  font-weight: bold;
-  text-transform: capitalize;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 0.85rem;
-}
-
-/* Status-specific colors (match slot-btns) */
 .appointment-card.booked {
   background-color: #f8d7da;
   border-color: #f5c6cb;
 }
+
 .appointment-card.in_progress {
   background-color: #fff3cd;
   border-color: #ffeeba;
 }
+
 .appointment-card.completed {
   background-color: #e2e3e5;
   border-color: #d6d8db;
 }
-/* Shared style for appointment action buttons */
+
 .action-btn {
   padding: 6px 14px;
   border: none;
@@ -232,26 +193,6 @@
   margin-top: 8px;
   margin-right: 8px;
   display: inline-block;
-}
-
-/* In Progress button (royal blue like appointments-btn) */
-.inprogress-btn {
-  background: #4169e1; /* royal blue */
-  color: white;
-}
-
-.inprogress-btn:hover {
-  background: #27408b;
-}
-
-/* Completed button (green tone) */
-.completed-btn {
-  background: #38a169; /* green */
-  color: white;
-}
-
-.completed-btn:hover {
-  background: #2f855a;
 }
 
 .modal-overlay {
@@ -338,13 +279,13 @@
   color: #000;
 }
 
+.inprogress-btn:hover {
+  background: #ffe58f;
+}
+
 .completed-btn {
   background: #8c8c8c;
   color: #fff;
-}
-
-.inprogress-btn:hover {
-  background: #ffe58f;
 }
 
 .completed-btn:hover {
@@ -357,5 +298,3 @@
   cursor: not-allowed !important;
   opacity: 0.7;
 }
-
-
