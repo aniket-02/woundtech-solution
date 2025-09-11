@@ -4,7 +4,7 @@ import "../styles.css";
 import AvailableCliniciansModal from "./modal";
 
 import { weekDays, generateSlots } from "../constants";
-import { fetchClinicianVisits, getWeekRange, deriveBookedSlots, deriveBookedSlotsPatient } from "../utils";
+import { getWeekRange, deriveBookedSlotsPatient } from "../utils";
 
 export default function PatientDashboard() {
   const [patientName, setPatientName] = useState("Patient");
@@ -36,12 +36,13 @@ export default function PatientDashboard() {
       const visits = data.visits || [];
       const newBookedSlots = deriveBookedSlotsPatient(visits, startOfWeek, endOfWeek);
 
-      // Store both slot and clinician name
+      // Store slot, clinician name, and status
       const slotsByDay = {};
       Object.keys(newBookedSlots).forEach((dayIndex) => {
         slotsByDay[dayIndex] = newBookedSlots[dayIndex].map((v) => ({
           slot: v.slot,
           clinicianName: v.clinicianName || "Unknown",
+          status: v.status || "booked", // fallback
         }));
       });
 
@@ -71,7 +72,10 @@ export default function PatientDashboard() {
       const daySlots = prev[dayIndex] || [];
       return {
         ...prev,
-        [dayIndex]: [...daySlots, { slot, clinicianName: clinician.name }],
+        [dayIndex]: [
+          ...daySlots,
+          { slot, clinicianName: clinician.name, status: "booked" },
+        ],
       };
     });
   };
@@ -80,7 +84,9 @@ export default function PatientDashboard() {
     <div className="dashboard-container">
       <div className="dashboard-header">
         <h2>Hi {patientName}, welcome to your dashboard!!!</h2>
-        <button className="signout-btn" onClick={handleSignOut}>Sign Out</button>
+        <button className="signout-btn" onClick={handleSignOut}>
+          Sign Out
+        </button>
       </div>
 
       <p>Select a slot below to book an appointment</p>
@@ -94,10 +100,16 @@ export default function PatientDashboard() {
               return (
                 <button
                   key={i}
-                  className={`slot-btn ${isBooked ? "booked" : "available"}`}
+                  className={`slot-btn ${
+                    isBooked ? bookedInfo.status : "available"
+                  }`}
                   onClick={() => !isBooked && handleSlotClick(index, slot)}
                   disabled={isBooked}
-                  title={isBooked ? `Booked with ${bookedInfo.clinicianName}` : ""}
+                  title={
+                    isBooked
+                      ? `Booked with ${bookedInfo.clinicianName} (${bookedInfo.status})`
+                      : ""
+                  }
                 >
                   {slot}
                 </button>

@@ -87,7 +87,7 @@
   cursor: not-allowed;
 }
 
-.slot-btn.in-progress {
+.slot-btn.in_progress {
   background-color: #fff3cd;
   border-color: #ffc107;
   color: #856404;

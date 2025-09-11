@@ -113,7 +113,7 @@ export default function ClinicianDashboard() {
                 ? bookedForSlot.status === "booked"
                   ? "booked"
                   : bookedForSlot.status === "in_progress"
-                  ? "in-progress"
+                  ? "in_progress"
                   : "completed"
                 : "available";
               return (
