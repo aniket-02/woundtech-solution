@@ -359,3 +359,71 @@
   background: #249955;
 }
 
+.appointment-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.2s;
+}
+
+.appointment-card:hover {
+  transform: translateY(-3px);
+}
+
+.appointment-time {
+  background-color: #f1f8fc;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #1e3a8a;
+  display: inline-block;
+}
+
+.appointment-details {
+  line-height: 1.5;
+  color: #334155;
+}
+
+.appointment-notes {
+  display: block;
+  margin-top: 4px;
+  color: #64748b;
+}
+
+.appointment-status {
+  font-weight: bold;
+  color: #2e7d32;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background-color: #d1fae5;
+  width: fit-content;
+}
+
+.appointment-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.appointment-actions button {
+  background-color: #2eaf65;
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  flex: 1;
+  transition: background 0.3s;
+}
+
+.appointment-actions button:hover {
+  background-color: #249955;
+}
+
+
