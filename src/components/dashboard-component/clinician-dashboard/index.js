@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles.css";
 
 import { weekDays, generateSlots } from "../constants";
-import { getWeekRange, deriveBookedSlots, fetchClinicianVisits, deriveBookedSlotsClinician } from "../utils";
+import { getWeekRange, fetchClinicianVisits, deriveBookedSlotsClinician } from "../utils";
 import AppointmentCard from "./modal";
 
 export default function ClinicianDashboard() {
@@ -27,7 +27,7 @@ export default function ClinicianDashboard() {
     }
   }, [navigate]);
 
-  const fetchVisits = async () => {
+  const fetchVisits = useCallback(async () => {
     if (!clinicianId) return;
 
     const visits = await fetchClinicianVisits(clinicianId);
@@ -36,11 +36,11 @@ export default function ClinicianDashboard() {
     const { startOfWeek, endOfWeek } = getWeekRange();
     const newBookedSlots = deriveBookedSlotsClinician(visits, startOfWeek, endOfWeek);
     setBookedSlots(newBookedSlots);
-  };
+  }, [clinicianId]);
 
   useEffect(() => {
     if (clinicianId) fetchVisits();
-  }, [clinicianId]);
+  }, [clinicianId, fetchVisits]);
 
   const openAppointmentsModal = () => setShowAppointmentsModal(true);
 
@@ -90,8 +90,18 @@ export default function ClinicianDashboard() {
       </div>
 
       {showAppointmentsModal && (
-        <div className="modal-overlay" onClick={() => setShowAppointmentsModal(false)}>
-          <div className="appointments-modal" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="modal-overlay"
+          role="button"
+          tabIndex={0}
+          onClick={() => setShowAppointmentsModal(false)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              setShowAppointmentsModal(false);
+            }
+          }}
+        >
+          <div className="appointments-modal">
             <h3>Your Appointments</h3>
             <div className="appointments-horizontal">
               {appointments.map((appt) => (

@@ -8,7 +8,6 @@ import { getWeekRange, deriveBookedSlotsPatient } from "../utils";
 
 export default function PatientDashboard() {
   const [patientName, setPatientName] = useState("Patient");
-  const [patientId, setPatientId] = useState(null);
   const [bookedSlots, setBookedSlots] = useState({});
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -21,7 +20,6 @@ export default function PatientDashboard() {
     if (patientData) {
       const parsed = JSON.parse(patientData);
       setPatientName(parsed.name);
-      setPatientId(parsed.id);
       fetchPatientBookings(parsed.id);
     } else {
       navigate("/");
