@@ -4,7 +4,7 @@ import "../styles.css";
 import AvailableCliniciansModal from "./modal";
 
 import { weekDays, generateSlots } from "../constants";
-import { fetchClinicianVisits, getWeekRange, deriveBookedSlots } from "../utils";
+import { fetchClinicianVisits, getWeekRange, deriveBookedSlots, deriveBookedSlotsPatient } from "../utils";
 
 export default function PatientDashboard() {
   const [patientName, setPatientName] = useState("Patient");
@@ -34,12 +34,15 @@ export default function PatientDashboard() {
       const data = await res.json();
       const { startOfWeek, endOfWeek } = getWeekRange();
       const visits = data.visits || [];
-      const newBookedSlots = deriveBookedSlots(visits, startOfWeek, endOfWeek);
+      const newBookedSlots = deriveBookedSlotsPatient(visits, startOfWeek, endOfWeek);
 
-      // Transform for patient UI: only store slot strings
+      // Store both slot and clinician name
       const slotsByDay = {};
       Object.keys(newBookedSlots).forEach((dayIndex) => {
-        slotsByDay[dayIndex] = newBookedSlots[dayIndex].map((v) => v.slot);
+        slotsByDay[dayIndex] = newBookedSlots[dayIndex].map((v) => ({
+          slot: v.slot,
+          clinicianName: v.clinicianName || "Unknown",
+        }));
       });
 
       setBookedSlots(slotsByDay);
@@ -62,11 +65,14 @@ export default function PatientDashboard() {
     setShowModal(true);
   };
 
-  const handleBookingConfirmed = () => {
+  const handleBookingConfirmed = (clinician) => {
     const { dayIndex, slot } = selectedSlot;
     setBookedSlots((prev) => {
       const daySlots = prev[dayIndex] || [];
-      return { ...prev, [dayIndex]: [...daySlots, slot] };
+      return {
+        ...prev,
+        [dayIndex]: [...daySlots, { slot, clinicianName: clinician.name }],
+      };
     });
   };
 
@@ -83,13 +89,15 @@ export default function PatientDashboard() {
           <div key={index} className="week-day-column">
             <h4>{day}</h4>
             {slots.map((slot, i) => {
-              const isBooked = bookedSlots[index]?.includes(slot);
+              const bookedInfo = bookedSlots[index]?.find((s) => s.slot === slot);
+              const isBooked = !!bookedInfo;
               return (
                 <button
                   key={i}
                   className={`slot-btn ${isBooked ? "booked" : "available"}`}
                   onClick={() => !isBooked && handleSlotClick(index, slot)}
                   disabled={isBooked}
+                  title={isBooked ? `Booked with ${bookedInfo.clinicianName}` : ""}
                 >
                   {slot}
                 </button>

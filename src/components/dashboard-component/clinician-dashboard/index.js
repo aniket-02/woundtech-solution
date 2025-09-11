@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles.css";
 
 import { weekDays, generateSlots } from "../constants";
-import { getWeekRange, deriveBookedSlots, fetchClinicianVisits } from "../utils";
+import { getWeekRange, deriveBookedSlots, fetchClinicianVisits, deriveBookedSlotsClinician } from "../utils";
 import AppointmentCard from "./modal";
 
 export default function ClinicianDashboard() {
@@ -34,7 +34,7 @@ export default function ClinicianDashboard() {
     setAppointments(visits);
 
     const { startOfWeek, endOfWeek } = getWeekRange();
-    const newBookedSlots = deriveBookedSlots(visits, startOfWeek, endOfWeek);
+    const newBookedSlots = deriveBookedSlotsClinician(visits, startOfWeek, endOfWeek);
     setBookedSlots(newBookedSlots);
   };
 

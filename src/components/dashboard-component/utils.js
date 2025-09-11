@@ -12,7 +12,27 @@ export const getWeekRange = (today = new Date()) => {
   return { startOfWeek, endOfWeek };
 };
 
-export const deriveBookedSlots = (visits, startOfWeek, endOfWeek) => {
+export const deriveBookedSlotsPatient = (visits, startOfWeek, endOfWeek) => {
+  const newBookedSlots = {};
+  visits.forEach((visit) => {
+    const visitDate = new Date(visit.timestamp);
+    if (visitDate >= startOfWeek && visitDate <= endOfWeek) {
+      const dayIndex = (visitDate.getDay() + 6) % 7; 
+      const hour = visitDate.getHours();
+      const slot = `${hour.toString().padStart(2, "0")}:00-${(hour + 1).toString().padStart(2, "0")}:00`;
+
+      if (!newBookedSlots[dayIndex]) newBookedSlots[dayIndex] = [];
+      newBookedSlots[dayIndex].push({
+        slot,
+        clinicianName: visit.clinician_name,
+        status: visit.status,
+      });
+    }
+  });
+  return newBookedSlots;
+};
+
+export const deriveBookedSlotsClinician = (visits, startOfWeek, endOfWeek) => {
   const newBookedSlots = {};
   visits.forEach((visit) => {
     const visitDate = new Date(visit.timestamp);
