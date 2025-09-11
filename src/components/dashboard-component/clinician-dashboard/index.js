@@ -54,16 +54,19 @@ export default function ClinicianDashboard() {
       if (data.visits) {
         const newBookedSlots = {};
         const today = new Date();
+
+        // start of current week (Monday)
         const startOfWeek = new Date(today);
         startOfWeek.setDate(today.getDate() - ((today.getDay() + 6) % 7));
         startOfWeek.setHours(0, 0, 0, 0);
+
+        // end of week = next Monday (exclusive)
         const endOfWeek = new Date(startOfWeek);
-        endOfWeek.setDate(startOfWeek.getDate() + 6);
+        endOfWeek.setDate(startOfWeek.getDate() + 7);
 
         data.visits.forEach((visit) => {
           const visitDate = new Date(visit.timestamp);
-          if (visitDate >= startOfWeek && visitDate <= endOfWeek) {
-            // Map JS getDay() to weekDays index (0 = Monday, 6 = Sunday)
+          if (visitDate >= startOfWeek && visitDate < endOfWeek) {
             let dayIndex = (visitDate.getDay() + 6) % 7;
 
             const hour = visitDate.getHours();
@@ -88,10 +91,6 @@ export default function ClinicianDashboard() {
     }
   };
 
-  useEffect(() => {
-    fetchBookedSlots();
-  }, [clinicianId]);
-
   // -------------------- Fetch Appointments --------------------
   const fetchAppointments = async () => {
     if (!clinicianId) return;
@@ -102,11 +101,24 @@ export default function ClinicianDashboard() {
       const data = await res.json();
       if (data.visits) {
         setAppointments(data.visits);
-        setShowAppointmentsModal(true);
       }
     } catch (err) {
       console.error(err);
     }
+  };
+
+  // fetch both slots and appointments when clinicianId is set
+  useEffect(() => {
+    if (clinicianId) {
+      fetchBookedSlots();
+      fetchAppointments();
+    }
+  }, [clinicianId]);
+
+  // -------------------- Open Modal --------------------
+  const openAppointmentsModal = async () => {
+    await fetchAppointments();
+    setShowAppointmentsModal(true);
   };
 
   // -------------------- Update Appointment Status --------------------
@@ -117,8 +129,8 @@ export default function ClinicianDashboard() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
       });
-      fetchAppointments();
-      fetchBookedSlots();
+      await fetchAppointments();
+      await fetchBookedSlots();
     } catch (err) {
       console.error(err);
     }
@@ -130,13 +142,29 @@ export default function ClinicianDashboard() {
     navigate("/");
   };
 
+  // -------------------- Derived Upcoming Appointments --------------------
+  const upcomingAppointments = appointments.filter(
+    (appt) => appt.status === "booked" || appt.status === "in_progress"
+  );
+
   return (
     <div className="dashboard-container">
       {/* Header */}
       <div className="dashboard-header">
         <h2>Hi {clinicianName}, welcome to your dashboard!</h2>
         <div>
-          <button className="appointments-btn" onClick={fetchAppointments}>
+          <button
+            className={`appointments-btn ${
+              upcomingAppointments.length === 0 ? "disabled-btn" : ""
+            }`}
+            onClick={openAppointmentsModal}
+            disabled={upcomingAppointments.length === 0}
+            title={
+              upcomingAppointments.length === 0
+                ? "You do not have any upcoming appointments"
+                : "View your upcoming appointments"
+            }
+          >
             View Appointments
           </button>
           <button className="signout-btn" onClick={handleSignOut}>
@@ -147,17 +175,14 @@ export default function ClinicianDashboard() {
 
       {/* Appointments Modal */}
       {showAppointmentsModal && (
-        <div className="modal-overlay" onClick={() => setShowAppointmentsModal(false)}>
+        <div
+          className="modal-overlay"
+          onClick={() => setShowAppointmentsModal(false)}
+        >
           <div
             className="appointments-modal"
             onClick={(e) => e.stopPropagation()}
           >
-            <button
-              className="close-btn-top-right"
-              onClick={() => setShowAppointmentsModal(false)}
-            >
-              ×
-            </button>
             <h3>Your Appointments</h3>
             <div className="appointments-horizontal">
               {appointments.map((appt) => (
@@ -168,10 +193,14 @@ export default function ClinicianDashboard() {
                   <div className="appointment-details">
                     <strong>Patient:</strong> {appt.patient_name}
                     {appt.notes && (
-                      <span className="appointment-notes">Notes: {appt.notes}</span>
+                      <span className="appointment-notes">
+                        Notes: {appt.notes}
+                      </span>
                     )}
                   </div>
-                  <div className="appointment-status">{appt.status.replace("_", " ")}</div>
+                  <div className="appointment-status">
+                    {appt.status.replace("_", " ")}
+                  </div>
                   <div className="appointment-actions">
                     {appt.status === "booked" && (
                       <button
@@ -221,7 +250,10 @@ export default function ClinicianDashboard() {
                   disabled
                   title={
                     bookedForSlot
-                      ? `${bookedForSlot.patientName} (${bookedForSlot.status.replace("_", " ")})`
+                      ? `${bookedForSlot.patientName} (${bookedForSlot.status.replace(
+                          "_",
+                          " "
+                        )})`
                       : ""
                   }
                 >

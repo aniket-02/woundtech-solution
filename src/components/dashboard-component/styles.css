@@ -351,4 +351,11 @@
   background: #bfbfbf;
 }
 
+.disabled-btn {
+  background-color: #cccccc !important;
+  color: #666 !important;
+  cursor: not-allowed !important;
+  opacity: 0.7;
+}
+
 
