@@ -14,14 +14,10 @@ export default function App() {
       <Router>
         <Routes>
           <Route path="/" element={<UserSelect />} />
-
-          {/* Login & Register pages should NOT be protected */}
           <Route path="/patient-login" element={<PatientLogin />} />
           <Route path="/clinician-login" element={<ClinicianLogin />} />
           <Route path="/patient-register" element={<PatientRegister />} />
           <Route path="/clinician-register" element={<ClinicianRegister />} />
-
-          {/* Dashboard pages remain protected */}
           <Route path="/clinician-dashboard" element={<ClinicianDashboard />} />
           <Route
             path="/patient-dashboard" element={<PatientDashboard />}

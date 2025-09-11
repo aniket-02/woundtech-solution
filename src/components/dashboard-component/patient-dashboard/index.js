@@ -1,58 +1,52 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles.css";
-import AvailableCliniciansModal from "../../../modal";
+import AvailableCliniciansModal from "./modal";
+
+import { weekDays, generateSlots } from "../constants";
+import { fetchClinicianVisits, getWeekRange, deriveBookedSlots } from "../utils";
 
 export default function PatientDashboard() {
   const [patientName, setPatientName] = useState("Patient");
-  const navigate = useNavigate();
-  const [selectedSlot, setSelectedSlot] = useState(null);
-  const [bookedSlots, setBookedSlots] = useState({});
-  const [showModal, setShowModal] = useState(false);
   const [patientId, setPatientId] = useState(null);
+  const [bookedSlots, setBookedSlots] = useState({});
+  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
-  const weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-
-  const generateSlots = () => {
-    const slots = [];
-    for (let hour = 9; hour < 17; hour++) {
-      const start = hour.toString().padStart(2, "0") + ":00";
-      const end = (hour + 1).toString().padStart(2, "0") + ":00";
-      slots.push(`${start}-${end}`);
-    }
-    return slots;
-  };
-
+  const navigate = useNavigate();
   const slots = generateSlots();
 
-  // ---------------- Load patient info and fetch booked slots ----------------
   useEffect(() => {
     const patientData = localStorage.getItem("patient");
     if (patientData) {
       const parsed = JSON.parse(patientData);
       setPatientName(parsed.name);
       setPatientId(parsed.id);
-
-      // Fetch booked visits for this patient
-      fetch(`http://localhost:5000/api/visits/patient/${parsed.id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          const booked = {};
-          const today = new Date();
-          data.visits.forEach((visit) => {
-            const visitDate = new Date(visit.timestamp);
-            const dayIndex = (visitDate.getDay() + 6) % 7; // map Sun=0..Sat=6 to Mon=0..Sun=6
-            const slotTime = `${visitDate.getHours().toString().padStart(2, "0")}:00-${(visitDate.getHours()+1).toString().padStart(2,"0")}:00`;
-            if (!booked[dayIndex]) booked[dayIndex] = [];
-            booked[dayIndex].push(slotTime);
-          });
-          setBookedSlots(booked);
-        })
-        .catch((err) => console.error(err));
+      fetchPatientBookings(parsed.id);
     } else {
-      navigate("/"); 
+      navigate("/");
     }
   }, [navigate]);
+
+  const fetchPatientBookings = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/visits/patient/${id}`);
+      const data = await res.json();
+      const { startOfWeek, endOfWeek } = getWeekRange();
+      const visits = data.visits || [];
+      const newBookedSlots = deriveBookedSlots(visits, startOfWeek, endOfWeek);
+
+      // Transform for patient UI: only store slot strings
+      const slotsByDay = {};
+      Object.keys(newBookedSlots).forEach((dayIndex) => {
+        slotsByDay[dayIndex] = newBookedSlots[dayIndex].map((v) => v.slot);
+      });
+
+      setBookedSlots(slotsByDay);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleSignOut = () => {
     localStorage.removeItem("patient");
@@ -68,7 +62,7 @@ export default function PatientDashboard() {
     setShowModal(true);
   };
 
-  const handleBookingConfirmed = (clinician) => {
+  const handleBookingConfirmed = () => {
     const { dayIndex, slot } = selectedSlot;
     setBookedSlots((prev) => {
       const daySlots = prev[dayIndex] || [];

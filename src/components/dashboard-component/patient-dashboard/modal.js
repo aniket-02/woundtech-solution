@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./style.css";
+import "../styles.css";
 
 export default function AvailableCliniciansModal({ timestamp, onClose, onBooking }) {
   const [clinicians, setClinicians] = useState([]);

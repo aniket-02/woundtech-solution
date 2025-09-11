@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../../styles/styles.css";
+import "../styles.css";
 
 export default function PatientLogin() {
   const [email, setEmail] = useState("");

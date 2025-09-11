@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../../styles/styles.css";
+import "../styles.css";
 
 export default function PatientRegister() {
   const [name, setName] = useState("");
@@ -31,8 +31,8 @@ export default function PatientRegister() {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-card">
+    <div className="register-container">
+      <div className="register-card">
         <h2>Patient Registration</h2>
         <form onSubmit={handleSubmit}>
           <input
