@@ -33,7 +33,7 @@ export default function PatientRegister() {
   return (
     <div className="register-container">
       <div className="register-card">
-        <h2>Patient Registration</h2>
+        <h2 className="header">Patient Registration</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -56,7 +56,7 @@ export default function PatientRegister() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit">Register</button>
+          <button type="submit" disabled={!name || !email || !password}>Register</button>
         </form>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles.css";
 
@@ -33,7 +33,7 @@ export default function ClinicianRegister() {
   return (
     <div className="register-container">
       <div className="register-card">
-        <h2>Clinician Registration</h2>
+        <h2 className="header">Clinician Registration</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -56,7 +56,7 @@ export default function ClinicianRegister() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit">Register</button>
+          <button type="submit" disabled={!name || !clinicianId || !password}>Register</button>
         </form>
       </div>
     </div>
