@@ -4,7 +4,7 @@ import "../styles.css";
 
 import { weekDays, generateSlots } from "../constants";
 import { getWeekRange, fetchClinicianVisits, deriveBookedSlotsClinician } from "../utils";
-import AppointmentCard from "./modal";
+import AppointmentCard from "./card";
 
 export default function ClinicianDashboard() {
   const [clinicianName, setClinicianName] = useState("Clinician");
@@ -69,7 +69,7 @@ export default function ClinicianDashboard() {
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
-        <h2>Hi {clinicianName}, welcome to your dashboard!</h2>
+        <h2 className="header">Hi {clinicianName}, welcome to your dashboard!</h2>
         <div>
           <button
             className={`appointments-btn ${upcomingAppointments.length === 0 ? "disabled-btn" : ""}`}
@@ -112,11 +112,11 @@ export default function ClinicianDashboard() {
         </div>
       )}
 
-      <p>Here are your slots for the current week:</p>
+      <p className="subtext">Here are your slots for the current week:</p>
       <div className="week-grid">
         {weekDays.map((day, index) => (
           <div key={index} className="week-day-column">
-            <h4>{day}</h4>
+            <h4 className="week-day">{day}</h4>
             {slots.map((slot, i) => {
               const bookedForSlot = bookedSlots[index]?.find((s) => s.slot === slot);
               const statusClass = bookedForSlot

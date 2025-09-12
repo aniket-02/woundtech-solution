@@ -81,17 +81,17 @@ export default function PatientDashboard() {
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
-        <h2>Hi {patientName}, welcome to your dashboard!!!</h2>
+        <h2 className="header">Hi {patientName}, welcome to your dashboard!!!</h2>
         <button className="signout-btn" onClick={handleSignOut}>
           Sign Out
         </button>
       </div>
 
-      <p>Select a slot below to book an appointment</p>
+      <p className="subtext">Select a slot below to book an appointment</p>
       <div className="week-grid">
         {weekDays.map((day, index) => (
           <div key={index} className="week-day-column">
-            <h4>{day}</h4>
+            <h4 className="week-day">{day}</h4>
             {slots.map((slot, i) => {
               const bookedInfo = bookedSlots[index]?.find((s) => s.slot === slot);
               const isBooked = !!bookedInfo;
