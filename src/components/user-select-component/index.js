@@ -1,29 +1,31 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { actions } from "./constants";
 import "./styles.css";
 
 function UserSelect() {
   const [role, setRole] = useState("");
   const navigate = useNavigate();
 
+  const handleNavigation = (action) => {
+    if (role === "patient") {
+      navigate(`/patient-${action}`);
+    } else if (role === "clinician") {
+      navigate(`/clinician-${action}`);
+    }
+  };
+
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <h2>Welcome</h2>
+    <div className="user-select-container">
+      <div className="user-select-card">
+        <h2 className="header">Welcome</h2>
         <p className="subtext">Choose your persona</p>
 
-        {/* Dropdown with placeholder */}
         <select
+          className="role-selector"
           value={role}
           onChange={(e) => setRole(e.target.value)}
           required
-          style={{
-            width: "100%",
-            padding: "12px",
-            borderRadius: "8px",
-            marginTop: "10px",
-            color: role ? "#1e293b" : "#9ca3af", // gray placeholder text
-          }}
         >
           <option value="" disabled hidden>
             Select your role
@@ -32,28 +34,17 @@ function UserSelect() {
           <option value="clinician">Clinician</option>
         </select>
 
-        {/* Login & Register buttons */}
-        <div className="card-buttons" style={{ marginTop: "15px" }}>
-          <button
-            type="button"
-            onClick={() => {
-              if (role === "patient") navigate("/patient-login");
-              else if (role === "clinician") navigate("/clinician-login");
-            }}
-            disabled={!role}
-          >
-            Login
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              if (role === "patient") navigate("/patient-register");
-              else if (role === "clinician") navigate("/clinician-register");
-            }}
-            disabled={!role}
-          >
-            Register
-          </button>
+        <div className="card-buttons">
+          {actions.map(({ label, value }) => (
+            <button
+              key={value}
+              type="button"
+              onClick={() => handleNavigation(value)}
+              disabled={!role}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
     </div>

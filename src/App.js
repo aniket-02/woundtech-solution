@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { RoleProvider } from "./context/RoleContext";
 import UserSelect from "./components/user-select-component";
 import PatientLogin from "./components/login-component/patient-login";
 import ClinicianLogin from "./components/login-component/clinician-login";
@@ -10,20 +9,16 @@ import ClinicianRegister from "./components/register-component/clinician-registe
 
 export default function App() {
   return (
-    <RoleProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<UserSelect />} />
-          <Route path="/patient-login" element={<PatientLogin />} />
-          <Route path="/clinician-login" element={<ClinicianLogin />} />
-          <Route path="/patient-register" element={<PatientRegister />} />
-          <Route path="/clinician-register" element={<ClinicianRegister />} />
-          <Route path="/clinician-dashboard" element={<ClinicianDashboard />} />
-          <Route
-            path="/patient-dashboard" element={<PatientDashboard />}
-          />
-        </Routes>
-      </Router>
-    </RoleProvider>
+    <Router>
+      <Routes>
+        <Route path="/" element={<UserSelect />} />
+        <Route path="/patient-login" element={<PatientLogin />} />
+        <Route path="/clinician-login" element={<ClinicianLogin />} />
+        <Route path="/patient-register" element={<PatientRegister />} />
+        <Route path="/clinician-register" element={<ClinicianRegister />} />
+        <Route path="/clinician-dashboard" element={<ClinicianDashboard />} />
+        <Route path="/patient-dashboard" element={<PatientDashboard />} />
+      </Routes>
+    </Router>
   );
 }

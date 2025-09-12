@@ -1,39 +1,92 @@
-.card-buttons {
+.user-select-container {
   display: flex;
-  justify-content: space-between;
-  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
 }
 
-.card-buttons button {
-  flex: 1;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
+.user-select-card {
+  background: #fff;
+  padding: 2rem;
+  width: 350px;
+  max-width: 90%;
+  border-radius: 16px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  text-align: left;
 
-.card-buttons button:disabled {
-  background: #cbd5e1;
-  cursor: not-allowed;
-  color: #64748b;
-}
+  .header {
+    margin-bottom: 1.5rem;
+    color: #1e40af;
+    font-size: 1.5rem;
+    text-align: center;
+  }
 
-.card-buttons button:nth-child(1) {
-  background: #2eaf65;
-  color: #fff;
-}
+  .subtext {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: #64748b;
+    text-align: center;
+  }
 
-.card-buttons button:nth-child(1):hover:not(:disabled) {
-  background: #249955;
-}
+  .card-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
 
-.card-buttons button:nth-child(2) {
-  background: #1e40af;
-  color: #fff;
-}
+    button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-top: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
 
-.card-buttons button:nth-child(2):hover:not(:disabled) {
-  background: #1a36a0;
+      &:nth-child(1) {
+        background: #2eaf65;
+        color: #fff;
+      }
+
+      &:nth-child(2) {
+        background: #1e40af;
+        color: #fff;
+      }
+
+      &:disabled {
+        background: #a1a1a1;
+        cursor: not-allowed;
+        color: #e0e0e0;
+      }
+    }
+  }
+
+  .role-selector {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background: #fff;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(46, 175, 101, 0.3);
+      border-color: #2eaf65;
+    }
+  }
 }
