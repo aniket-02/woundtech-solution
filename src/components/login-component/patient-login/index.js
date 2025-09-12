@@ -40,7 +40,7 @@ export default function PatientLogin() {
   return (
     <div className="login-container">
       <div className="login-card">
-        <h2>Patient Login</h2>
+        <h2 className="header">Patient Login</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="email"
@@ -56,7 +56,7 @@ export default function PatientLogin() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit">Login</button>
+          <button type="submit" disabled={!email || !password}>Login</button>
         </form>
       </div>
     </div>

@@ -42,7 +42,7 @@ export default function ClinicianLogin() {
   return (
     <div className="login-container">
       <div className="login-card">
-        <h2>Clinician Login</h2>
+        <h2 className="header">Clinician Login</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -58,7 +58,7 @@ export default function ClinicianLogin() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit">Login</button>
+          <button type="submit" disabled={!clinicianId || !password}>Login</button>
         </form>
       </div>
     </div>
