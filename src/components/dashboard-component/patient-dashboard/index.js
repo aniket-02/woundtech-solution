@@ -4,7 +4,7 @@ import "../styles.css";
 import AvailableCliniciansModal from "./modal";
 
 import { weekDays, generateSlots } from "../constants";
-import { getWeekRange, deriveBookedSlotsPatient } from "../utils";
+import { getWeekRange, deriveBookedSlots } from "../utils";
 
 export default function PatientDashboard() {
   const [patientName, setPatientName] = useState("Patient");
@@ -32,19 +32,8 @@ export default function PatientDashboard() {
       const data = await res.json();
       const { startOfWeek, endOfWeek } = getWeekRange();
       const visits = data.visits || [];
-      const newBookedSlots = deriveBookedSlotsPatient(visits, startOfWeek, endOfWeek);
-
-      // Store slot, clinician name, and status
-      const slotsByDay = {};
-      Object.keys(newBookedSlots).forEach((dayIndex) => {
-        slotsByDay[dayIndex] = newBookedSlots[dayIndex].map((v) => ({
-          slot: v.slot,
-          clinicianName: v.clinicianName || "Unknown",
-          status: v.status || "booked", // fallback
-        }));
-      });
-
-      setBookedSlots(slotsByDay);
+      const newBookedSlots = deriveBookedSlots(visits, startOfWeek, endOfWeek, 'patient');
+      setBookedSlots(newBookedSlots);
     } catch (err) {
       console.error(err);
     }
